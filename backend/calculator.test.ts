@@ -23,7 +23,7 @@ describe('Calculator Logic', () => {
 describe('Calculator API', () => {
   test('POST /calculate - addition', async () => {
     const res = await request(app)
-      .post('/calculate')
+      .post('/api/calculate')
       .send({ a: 10, b: 5, operation: 'add' });
     expect(res.statusCode).toBe(200);
     expect(res.body.result).toBe(15);
@@ -31,7 +31,7 @@ describe('Calculator API', () => {
 
   test('POST /calculate - division by zero', async () => {
     const res = await request(app)
-      .post('/calculate')
+      .post('/api/calculate')
       .send({ a: 10, b: 0, operation: 'divide' });
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toBe('Division by zero');
@@ -39,7 +39,7 @@ describe('Calculator API', () => {
 
   test('POST /calculate - missing parameters', async () => {
     const res = await request(app)
-      .post('/calculate')
+      .post('/api/calculate')
       .send({ a: 10, operation: 'add' });
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toBe('Missing parameters');
@@ -47,7 +47,7 @@ describe('Calculator API', () => {
 
   test('POST /calculate - unknown operation', async () => {
     const res = await request(app)
-      .post('/calculate')
+      .post('/api/calculate')
       .send({ a: 10, b: 5, operation: 'modulus' });
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toBe('Unknown operation');
