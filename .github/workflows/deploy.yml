@@ -16,8 +16,8 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     outputs:
-      backend-image: ${{ steps.meta-backend.outputs.tags }}
-      frontend-image: ${{ steps.meta-frontend.outputs.tags }}
+      backend-image: ${{ steps.set-backend-image.outputs.image }}
+      frontend-image: ${{ steps.set-frontend-image.outputs.image }}
 
     steps:
       - name: Checkout code
@@ -47,6 +47,7 @@ jobs:
           tags: type=raw,value=latest
 
       - name: Build and push backend image
+        id: build-backend
         uses: docker/build-push-action@v6
         with:
           context: ./backend
@@ -55,7 +56,12 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Set backend image output
+        id: set-backend-image
+        run: echo "image=${{ secrets.DOCKERHUB_USERNAME }}/simple-full-backend:latest" >> $GITHUB_OUTPUT
+
       - name: Build and push frontend image
+        id: build-frontend
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
@@ -63,6 +69,10 @@ jobs:
           tags: ${{ steps.meta-frontend.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Set frontend image output
+        id: set-frontend-image
+        run: echo "image=${{ secrets.DOCKERHUB_USERNAME }}/simple-full-frontend:latest" >> $GITHUB_OUTPUT
 
   deploy:
     needs: build-and-push
