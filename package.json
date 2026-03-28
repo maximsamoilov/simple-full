@@ -1,0 +1,10 @@
+{
+  "name": "calculator-app",
+  "version": "1.0.0",
+  "description": "Full stack calculator application",
+  "scripts": {
+    "test:frontend": "npm test --prefix frontend",
+    "test:backend": "npm test --prefix backend",
+    "test": "npm run test:frontend && npm run test:backend"
+  }
+}
