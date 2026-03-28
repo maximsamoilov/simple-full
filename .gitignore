@@ -40,6 +40,16 @@ coverage/
 *.swn
 .DS_Store
 
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+.terraform.tfstate.lock.info
+terraform.tfplan
+
 # Misc
 .cache/
 .nyc_output/
@@ -48,3 +58,5 @@ coverage/
 .tap/
 .temp/
 .turbo/
+test-results/
+

@@ -12,7 +12,9 @@ interface CalculateRequest {
   operation?: string;
 }
 
-app.post('/calculate', (req: Request<{}, {}, CalculateRequest>, res: Response) => {
+const apiRouter = express.Router();
+
+apiRouter.post('/calculate', (req: Request<{}, {}, CalculateRequest>, res: Response) => {
   const { a, b, operation } = req.body;
   
   if (a === undefined || b === undefined || !operation) {
@@ -52,6 +54,9 @@ app.post('/calculate', (req: Request<{}, {}, CalculateRequest>, res: Response) =
     res.status(400).json({ error: error.message });
   }
 });
+
+// Wrap routes in /api so it can be enabled/disabled easily
+app.use('/api', apiRouter);
 
 const PORT = process.env.PORT || 3001;
 // Do not start server if it's imported in tests
