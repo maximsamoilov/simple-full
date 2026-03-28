@@ -9,7 +9,7 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   AWS_REGION: eu-central-1
-  ALB_DNS_NAME: simple-full-alb-1074695551.eu-central-1.elb.amazonaws.com
+  ALB_DNS_NAME: simple-full-alb-1593590786.eu-central-1.elb.amazonaws.com
 
 jobs:
   build-and-push:
