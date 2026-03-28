@@ -1,5 +1,14 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import './App.css'
+
+export const getDisplayFontSize = (value: string): string => {
+  const len = value.length;
+  if (len <= 9)  return '2em';
+  if (len <= 12) return '1.6em';
+  if (len <= 16) return '1.2em';
+  if (len <= 20) return '0.95em';
+  return '0.75em';
+};
 
 function App() {
   const [display, setDisplay] = useState<string>('0');
@@ -83,9 +92,11 @@ function App() {
     setWaitingForSecond(false);
   };
 
+  const fontSize = useMemo(() => getDisplayFontSize(display), [display]);
+
   return (
     <div className="calculator">
-      <div className="display" data-testid="display">{display}</div>
+      <div className="display" data-testid="display" style={{ fontSize }}>{display}</div>
       <div className="buttons">
         <button onClick={clear} className="clear-button">C</button>
         <button onClick={() => inputDigit(7)}>7</button>

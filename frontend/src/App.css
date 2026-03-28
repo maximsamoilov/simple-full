@@ -28,12 +28,19 @@ body {
   background: #222;
   color: #fff;
   font-size: 2em;
-  padding: 10px;
+  padding: 10px 14px;
   text-align: right;
   border-radius: 8px;
   margin-bottom: 20px;
   min-height: 48px;
-  word-break: break-all;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition: font-size 0.15s ease;
 }
 
 .buttons {
