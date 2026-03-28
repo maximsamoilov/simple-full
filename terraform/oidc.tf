@@ -50,7 +50,8 @@ resource "aws_iam_role_policy" "github_actions_ecs" {
           "ecs:UpdateService",
           "ecs:DescribeServices",
           "ecs:DescribeClusters",
-          "iam:PassRole"
+          "iam:PassRole",
+          "elasticloadbalancing:DescribeLoadBalancers"
         ]
         Resource = "*"
       }

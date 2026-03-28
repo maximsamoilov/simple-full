@@ -1,10 +1,10 @@
 name: Deploy
 
-on:
-  workflow_run:
-    workflows: ['Check']
-    types: [completed]
-    branches: ['main']
+# on:
+#   workflow_run:
+#     workflows: ['Check']
+#     types: [completed]
+#     branches: ['main']
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -52,7 +52,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-
       - name: Build and push frontend image
         id: build-frontend
         uses: docker/build-push-action@v6
@@ -62,7 +61,6 @@ jobs:
           tags: ${{ steps.meta-frontend.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
 
   deploy:
     needs: build-and-push
