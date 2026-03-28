@@ -15,9 +15,6 @@ jobs:
   build-and-push:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    outputs:
-      backend-image: ${{ steps.set-backend-image.outputs.image }}
-      frontend-image: ${{ steps.set-frontend-image.outputs.image }}
 
     steps:
       - name: Checkout code
@@ -56,9 +53,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Set backend image output
-        id: set-backend-image
-        run: echo "image=${{ secrets.DOCKERHUB_USERNAME }}/simple-full-backend:latest" >> $GITHUB_OUTPUT
 
       - name: Build and push frontend image
         id: build-frontend
@@ -70,9 +64,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Set frontend image output
-        id: set-frontend-image
-        run: echo "image=${{ secrets.DOCKERHUB_USERNAME }}/simple-full-frontend:latest" >> $GITHUB_OUTPUT
 
   deploy:
     needs: build-and-push
@@ -111,7 +102,7 @@ jobs:
         with:
           task-definition: /tmp/backend-task-def.json
           container-name: backend
-          image: ${{ needs.build-and-push.outputs.backend-image }}
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/simple-full-backend:latest
 
       - name: Update frontend image in task definition
         id: frontend-task-def
@@ -119,7 +110,7 @@ jobs:
         with:
           task-definition: /tmp/frontend-task-def.json
           container-name: frontend
-          image: ${{ needs.build-and-push.outputs.frontend-image }}
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/simple-full-frontend:latest
 
       - name: Deploy backend to ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
