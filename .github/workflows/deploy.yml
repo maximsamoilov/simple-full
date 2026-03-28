@@ -9,7 +9,6 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   AWS_REGION: eu-central-1
-  ALB_DNS_NAME: simple-full-alb-1593590786.eu-central-1.elb.amazonaws.com
 
 jobs:
   build-and-push:
@@ -79,7 +78,7 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          role-to-assume: arn:aws:iam::340550524365:role/simple-full-github-actions-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Download backend task definition
@@ -128,8 +127,17 @@ jobs:
           cluster: simple-full-cluster
           wait-for-service-stability: true
 
+      - name: Get ALB DNS
+        id: alb
+        run: |
+          ALB_DNS=$(aws elbv2 describe-load-balancers \
+            --names simple-full-alb \
+            --query 'LoadBalancers[0].DNSName' \
+            --output text)
+          echo "dns=$ALB_DNS" >> $GITHUB_OUTPUT
+
       - name: Deployment Summary
         run: |
           echo "### Deployment successful! :rocket:" >> $GITHUB_STEP_SUMMARY
-          echo "- Frontend: [http://${{ env.ALB_DNS_NAME }}](http://${{ env.ALB_DNS_NAME }})" >> $GITHUB_STEP_SUMMARY
-          echo "- Backend: [http://${{ env.ALB_DNS_NAME }}/api](http://${{ env.ALB_DNS_NAME }}/api)" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend: [http://${{ steps.alb.outputs.dns }}](http://${{ steps.alb.outputs.dns }})" >> $GITHUB_STEP_SUMMARY
+          echo "- Backend: [http://${{ steps.alb.outputs.dns }}/api](http://${{ steps.alb.outputs.dns }}/api)" >> $GITHUB_STEP_SUMMARY
