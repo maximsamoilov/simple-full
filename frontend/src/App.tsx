@@ -38,7 +38,7 @@ function App() {
 
   const performCalculation = async (op: string, a: number, b: number): Promise<number> => {
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/calculate', {
+      const response = await fetch(import.meta.env.VITE_API_URL || '/api/calculate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
