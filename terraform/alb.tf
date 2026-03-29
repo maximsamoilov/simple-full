@@ -7,25 +7,6 @@ resource "aws_lb" "main" {
   subnets            = aws_subnet.public[*].id
 }
 
-# Target Group for Frontend (/)
-resource "aws_lb_target_group" "frontend" {
-  name        = "${var.project_name}-frontend-tg"
-  port        = 80
-  protocol    = "HTTP"
-  vpc_id      = aws_vpc.main.id
-  target_type = "ip"
-
-  health_check {
-    path                = "/"
-    protocol            = "HTTP"
-    matcher             = "200"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-  }
-}
-
 # Target Group for Backend (/api)
 resource "aws_lb_target_group" "backend" {
   name        = "${var.project_name}-backend-tg"
@@ -53,10 +34,15 @@ resource "aws_lb_listener" "http" {
   port              = "80"
   protocol          = "HTTP"
 
-  # Default action: forward to frontend
+  # Default action: return 404 since CloudFront handles frontend
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.frontend.arn
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "404 Not Found"
+      status_code  = "404"
+    }
   }
 }
 

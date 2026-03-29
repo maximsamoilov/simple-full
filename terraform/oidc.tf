@@ -51,7 +51,11 @@ resource "aws_iam_role_policy" "github_actions_ecs" {
           "ecs:DescribeServices",
           "ecs:DescribeClusters",
           "iam:PassRole",
-          "elasticloadbalancing:DescribeLoadBalancers"
+          "elasticloadbalancing:DescribeLoadBalancers",
+          "s3:PutObject",
+          "s3:ListBucket",
+          "s3:DeleteObject",
+          "cloudfront:CreateInvalidation"
         ]
         Resource = "*"
       }
