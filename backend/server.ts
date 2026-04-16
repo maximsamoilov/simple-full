@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { add, subtract, multiply, divide } from './calculator';
+import { Calculator } from './calculator';
 
 const app = express();
 
@@ -37,16 +37,16 @@ apiRouter.post(
       let result: number;
       switch (operation) {
         case 'add':
-          result = add(numA, numB);
+          result = Calculator.add(numA, numB);
           break;
         case 'subtract':
-          result = subtract(numA, numB);
+          result = Calculator.subtract(numA, numB);
           break;
         case 'multiply':
-          result = multiply(numA, numB);
+          result = Calculator.multiply(numA, numB);
           break;
         case 'divide':
-          result = divide(numA, numB);
+          result = Calculator.divide(numA, numB);
           break;
         default:
           res.status(400).json({ error: 'Unknown operation' });

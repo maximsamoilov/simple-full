@@ -1,22 +1,22 @@
-import { add, subtract, multiply, divide } from './calculator';
+import { Calculator } from './calculator';
 import request from 'supertest';
 import app from './server';
 
 describe('Calculator Logic', () => {
   test('adds 1 + 2 to equal 3', () => {
-    expect(add(1, 2)).toBe(3);
+    expect(Calculator.add(1, 2)).toBe(3);
   });
   test('subtracts 5 - 2 to equal 3', () => {
-    expect(subtract(5, 2)).toBe(3);
+    expect(Calculator.subtract(5, 2)).toBe(3);
   });
   test('multiplies 2 * 3 to equal 6', () => {
-    expect(multiply(2, 3)).toBe(6);
+    expect(Calculator.multiply(2, 3)).toBe(6);
   });
   test('divides 6 / 2 to equal 3', () => {
-    expect(divide(6, 2)).toBe(3);
+    expect(Calculator.divide(6, 2)).toBe(3);
   });
   test('throws error on division by zero', () => {
-    expect(() => divide(1, 0)).toThrow("Division by zero");
+    expect(() => Calculator.divide(1, 0)).toThrow("Division by zero");
   });
 });
 
